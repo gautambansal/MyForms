@@ -117,7 +117,7 @@ def edit_f(fid):
     if not form.edit_form:
         return render_template('index.html')
     
-    return render_template('edit_form.html',form_data=form.edit_form)
+    return render_template('edit_form.html',form_data=form.edit_form,fid=fid)
 
 
 @login_required

@@ -7,7 +7,7 @@
     
     <div id="formContent">
     <br>
-    <h2 class="textcolor"> Admin Login </h2>
+    <h2 class="textcolor"> Sign In </h2>
     <br>
     <section class="mb-5 login-form">
 
@@ -17,17 +17,17 @@
         {{ form.hidden_tag() }}
         <p>
             {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
+            {{ form.username(size=32,class="form-control") }}
         </p>
         <p>
             {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
+            {{ form.password(size=32,class="form-control") }}
         </p>
         
         {% if msg%}
         <div class="flash alert alert-danger" role="alert">{{ msg }}</div>
         {% endif %}
-        <p>{{ form.submit() }}</p>
+        <p>{{ form.submit(class="btn btn-primary") }}</p>
         
         
 
