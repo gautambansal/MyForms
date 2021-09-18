@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Admin::Login{% endblock %}
+{%block content%}
+<!--Section: Login Form-->
+
+<div class="wrapper" >
+    
+    <div id="formContent">
+    <br>
+    <h2 class="textcolor"> Admin Login </h2>
+    <br>
+    <section class="mb-5 login-form">
+
+        <form class="needs-validation" novalidate autocomplete="off" method="POST">
+    
+        
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+        </p>
+        
+        {% if msg%}
+        <div class="flash alert alert-danger" role="alert">{{ msg }}</div>
+        {% endif %}
+        <p>{{ form.submit() }}</p>
+        
+        
+
+        </form>
+    
+    </section>
+    </div>
+</div>
+  <!--Section: Login Form-->
+
+{%endblock%}

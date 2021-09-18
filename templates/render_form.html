@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Drag & Drop Bootstrap Form Builder</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href={{ url_for('static',filename='js/bootstrap.min.css') }} rel="stylesheet">
+        <link href={{ url_for('static',filename='js/bootstrap-responsive.min.css') }} rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="container">
+        
+            {{form_data | safe}}
+     
+        </div>
+        <script src={{ url_for('static',filename='js/jquery.min.js') }}></script>
+        <script src={{ url_for('static',filename='js/bootstrap.min.js') }}></script>
+    </body>
+</html>

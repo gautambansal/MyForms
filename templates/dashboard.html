@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Drag & Drop Bootstrap Form Builder</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href={{ url_for('static',filename='js/bootstrap.min.css') }} rel="stylesheet">
+        <link href={{ url_for('static',filename='js/bootstrap-responsive.min.css') }} rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="container">
+        
+            <a href="/newform" class="nav-link textColor">Create Blank</a>
+            <div>Recent Forms</div>
+            <div>
+                {%if forms%}
+                {%for form in forms%}
+                <div>{{form.creation_date}}
+                    <span>---</span><a href="/editForm/{{form.id}}">Edit</a>
+                </div>
+
+                {%endfor%}
+                {%else%}
+                <div>No forms</div>
+                {%endif%}
+            </div>
+     
+        </div>
+        <script src={{ url_for('static',filename='js/jquery.min.js') }}></script>
+        <script src={{ url_for('static',filename='js/bootstrap.min.js') }}></script>
+        <script src={{ url_for('static',filename='js/fb.js') }}></script>
+    </body>
+</html>
