@@ -1,5 +1,6 @@
 from os import error
 import functools
+import json
 from sqlalchemy import desc
 from flask import Flask, jsonify, request,render_template,session,g,redirect,url_for
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -21,7 +22,6 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
-
 
 
 @app.route('/' , methods=['GET','POST'])
@@ -65,8 +65,7 @@ def load_logged_in_user():
     if user is None:
         g.user = None
     else:
-        username =  Users.query.filter_by(id=user).first()
-        g.user = username.id
+        g.user = user
 
 # This function will check if user is logged in or not
 
@@ -80,8 +79,9 @@ def login_required(view):
 
     return wrapped_view
 
-@login_required
+
 @app.route('/home',methods = ['GET'])
+@login_required
 def dashboard():
     forms = Forms.query.filter_by(user_id=g.user).order_by(desc(Forms.creation_date)).all() 
     return render_template('dashboard.html',forms=forms)
@@ -93,8 +93,8 @@ def dashboard():
 #     return render_template('index.html',fid = fid)
 
 
-@login_required
 @app.route('/newform',methods = ['GET'])
+@login_required
 def newform():
     try:
         newForm = Forms()
@@ -107,26 +107,42 @@ def newform():
 
     return redirect(url_for('edit_f',fid=newForm.id))
 
-
-
+@app.route('/responses/<int:fid>',methods = ['GET'])
 @login_required
+def getResponse(fid):
+    form = Forms.query.filter(Forms.id==fid,Forms.user_id==g.user).first()
+    
+    if form:
+        responses = Formdata.query.filter(Formdata.form_id==fid).all()
+        for resp in responses:
+            resp.form_data = json.loads(resp.form_data)
+            
+        #print(responses[0]) 
+        return render_template('responses.html',responses = responses) 
+    
+    return render_template('responses.html',msg="No form exist")
+
+
+
+
 @app.route('/editForm/<int:fid>',methods = ['GET'])
+@login_required
 def edit_f(fid):
-    form = Forms.query.filter(Forms.id==fid).first()
-    
-    if not form.edit_form:
-        return render_template('index.html')
-    
+    form = Forms.query.filter(Forms.id==fid,Forms.user_id==g.user).first()
+    if not form:
+        return render_template('error.html') 
     return render_template('edit_form.html',form_data=form.edit_form,fid=fid)
 
 
-@login_required
+
+
 @app.route('/editForm/<int:fid>/save',methods = ['POST'])
+@login_required
 def save(fid):
-    form = Forms.query.filter(Forms.id==fid).first()
+    form = Forms.query.filter(Forms.id==fid,Forms.user_id==g.user).first()
     
-    if form.user_id != g.user:
-        return "error"
+    if not form:
+        return render_template('error.html') 
 
     form_content = request.form['javascript_data']
     edit_form =  request.form['edit_data']
@@ -143,19 +159,33 @@ def save(fid):
         print(e)
         return "error"
     
-    return "success"
+    return "Changes Applied!!"
 
 
 @app.route('/form/<int:fid>',methods = ['GET','POST'])
 def render_f(fid):
     form = Forms.query.filter(Forms.id==fid).first()
     if request.method == 'POST':
-        print(request.form)
-        print(request.files.items())
+        
+        data = request.form
+        my_dict = {}
+        
+        for key in data:
+            my_dict[key] = [item for item in data.getlist(key)]
+        
+        data = json.dumps(my_dict)
+
+        try:
+            newData = Formdata()
+            newData.form_data = data
+            newData.form_id = fid 
+            db.session.add(newData)
+            db.session.commit()
+
+        except Exception as e:
+            print(e)
         return render_template('thankyoupage.html')
     return render_template('render_form.html',form_data=form.form_content)
-
-
 
 
 if __name__ == '__main__':

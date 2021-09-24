@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Myforms</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+ 
+    </head>
+    <body>
+        <div class="container">
+           
+            <h2>Responses</h2>
+            
+                {%if responses%}
+               
+                <table class="display" id="table_id">
+                    <thead>
+                      <tr>
+                        <th scope="col">Submission Date</th>
+                        <th scope="col">Responses</th>
+                        <!-- {%for key,value in responses[0].form_data.items() %}
+                            <th scope="col">{{key}}</th>
+                        {%endfor%} -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {%for response in responses%}
+                        <tr>
+                            <td>{{response.submission_date}}</td>
+                            <td>
+                                <table>
+                                    {%for key,value in response.form_data.items() %}
+                                    <tr><th>{{key}}</th> <td>{{value}}</td></tr>
+                                    {%endfor%}
+                                </table>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                
+                    </tbody>
+                  </table>
+                
+                {%else%}
+                <div>No Responses</div>
+                {%endif%}
+            
+        </div>
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+        <script>
+        $(document).ready( function () {
+            $('#table_id').DataTable();
+        } );
+        </script>
+<!--         
+<script>
+    const txt = {{res}}
+    const obj = JSON.parse(txt);
+    document.getElementById("demo").innerHTML = "<div>"+obj.name+"</div><div>"+ obj.age+"</div>";
+    </script>
+    </body> -->
+</html>

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap 3 Form Builder</title>
+    <title>MyForms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="一个基于Bootstrap3的表单创建器。" />
     <meta name="keywords" content="Bootstrap 3 Form Builder" />
@@ -61,6 +61,7 @@
             <h2>Your Form</h2>
             <hr>
             <div id="build">
+              {%if not form_data%}
               <form id="target" class="form-horizontal" method="POST">
                 <fieldset>
                   <div id="legend" class="component" rel="popover" title="Form Title" trigger="manual"
@@ -77,12 +78,13 @@
                   </div>
                 </fieldset>
               </form>
+              {%else%}
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
-            <h2>Drag & Drop components</h2>
+            <h2>Drag & Drop components<a class="btn-danger btn-lg" href="/logout" style="float: right;">Sign out</a></h2>
             <hr>
           <div class="tabbable">
             <ul class="nav nav-tabs" id="navtab">
@@ -270,13 +272,13 @@
 
                       <!-- Multiple Checkboxes -->
                       <div class="col-md-4 valtype" data-valtype="inline-checkboxes">
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="1"> 1
                         </label>
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="2"> 2
                         </label>
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="3"> 3
                         </label>
                       </div>
@@ -299,15 +301,15 @@
                       <div class="col-md-4 valtype" data-valtype="inline-radios">
 
                         <!-- Inline Radios -->
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="1" checked="checked" name="group">
                           1
                         </label>
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="2" name="group">
                           2
                         </label>
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="3">
                           3
                         </label>

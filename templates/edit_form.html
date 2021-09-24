@@ -58,16 +58,46 @@
       <div class="row clearfix">
         <div class="col-md-6">
           <div class="clearfix">
-            <h2>Your Form</h2>
+            <h2>Your Form
+              
+              <a  onclick="myFunction()"  class="btn btn-lg btn-primary" style="float: right; margin-left:5px">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" style="vertical-align: middle;" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                  <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                  <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+                </svg>
+                Copy Link
+              </a>
+              <a id="sourcetab" class="btn btn-lg btn-primary" style="float: right;" >Apply Changes</a>
+            </h2>
+            
             <hr>
             <div id="build">
-               {{form_data | safe}}
+              {%if not form_data%}
+              <form id="target" class="form-horizontal" method="POST">
+                <fieldset>
+                  <div id="legend" class="component" rel="popover" title="Form Title" trigger="manual"
+                    data-content="
+                    <form class='form'>
+                      <div class='form-group col-md-12'>
+                        <label class='control-label'>Title</label> <input class='form-control' type='text' name='title' id='text'>
+                        <hr/>
+                        <button class='btn btn-info'>Save</button><button class='btn btn-danger'>Cancel</button>
+                      </div>
+                    </form>" data-html="true"
+                    >
+                    <legend class="valtype" data-valtype="text">Form Name</legend>
+                  </div>
+                </fieldset>
+              </form>
+              {%else%} 
+                {{form_data | safe}}
+              {%endif%}
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
-            <h2>Drag & Drop components</h2>
+            <h2>Drag & Drop components<a class="btn-danger btn-lg" href="/logout" style="float: right;">Sign out</a></h2>
             <hr>
           <div class="tabbable">
             <ul class="nav nav-tabs" id="navtab">
@@ -75,7 +105,8 @@
               <li class><a href="#2" data-toggle="tab">Select</a></li>
               <li class><a href="#3" data-toggle="tab">Checkbox / Radio</a></li>
               <li class><a href="#4" data-toggle="tab">Buttons</a></li>
-              <li class><a id="sourcetab" class="btn btn-primary" href="#5" data-toggle="tab">Apply Changes</a></li>
+              <!-- <li class><a id="sourcetab" class="btn btn-primary" href="#5" data-toggle="tab" >Apply Changes</a></li>
+               -->
             </ul>
             <form class="form-horizontal" id="components">
               <fieldset>
@@ -201,11 +232,11 @@
 
                         <!-- Multiple Checkboxes -->
                         <label class="checkbox">
-                          <input type="checkbox" value="Option one">
+                          <input type="checkbox" value="Option one" name="default-checkbox-name" >
                           Option one
                         </label>
                         <label class="checkbox">
-                          <input type="checkbox" value="Option two">
+                          <input type="checkbox" value="Option two" name="default-checkbox-name">
                           Option two
                         </label>
                       </div>
@@ -256,13 +287,13 @@
 
                       <!-- Multiple Checkboxes -->
                       <div class="col-md-4 valtype" data-valtype="inline-checkboxes">
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="1"> 1
                         </label>
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="2"> 2
                         </label>
-                        <label class="checkbox inline">
+                        <label class="checkbox-inline">
                           <input type="checkbox" value="3"> 3
                         </label>
                       </div>
@@ -285,15 +316,15 @@
                       <div class="col-md-4 valtype" data-valtype="inline-radios">
 
                         <!-- Inline Radios -->
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="1" checked="checked" name="group">
                           1
                         </label>
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="2" name="group">
                           2
                         </label>
-                        <label class="radio inline">
+                        <label class="radio-inline">
                           <input type="radio" value="3">
                           3
                         </label>
@@ -317,7 +348,7 @@
 
                       <!-- File Upload -->
                       <div class="col-md-4">
-                        <input class="input-file" id="fileInput" type="file">
+                        <input class="input-file" id="fileInput" type="file" name="default_file_name" data-valtype="file_input">
                       </div>
                     </div>
 
@@ -350,11 +381,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane" id="5">
+                  <!-- <div class="tab-pane" id="5">
                     <h3>
                       Form link : <a href="/form/{{fid}}" target="blank">Click</a>
                     </h3>
-                  </div>
+                  </div> -->
                 </fieldset>
               </form>
             </div>
@@ -367,5 +398,18 @@
     <script src={{ url_for('static',filename='js/jquery.min.js') }}></script>
     <script src={{ url_for('static',filename='js/bootstrap.min.js') }}></script>
     <script src={{ url_for('static',filename='js/fb.js') }}></script>
+    <script>
+      function myFunction() {
+        /* Get the URL */
+        var copyText = window.location.hostname+":"+window.location.port+"/form/{{fid}}";
+        
+
+         /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText);
+      
+        /* Alert the copied text */
+        alert("Link Copied : "+copyText);
+      }
+    </script>
   </body>
 </html>

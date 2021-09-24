@@ -229,10 +229,13 @@ $(document).ready(function(){
       $.each(inputs, function(i,e){
       var vartype = $(e).attr("id");
       var value = $active_component.find('[data-valtype="'+vartype+'"]')
+
       if(vartype==="label"){
         var rightInput =  $active_component.find('[data-valtype="placeholder"]')
         $(rightInput).attr("name", $(e).val());
         var rightInput =  $active_component.find('[data-valtype="option"]')
+        $(rightInput).attr("name", $(e).val());
+        var rightInput =  $active_component.find('[data-valtype="file_input"]')
         $(rightInput).attr("name", $(e).val());
         $(value).text($(e).val());
       }
@@ -260,10 +263,11 @@ $(document).ready(function(){
         });
       } else if (vartype==="checkboxes"){
         var checkboxes = $(e).val().split("\n");
+        var box_name = $(".popover #label").val();
         $(value).html("\n      <!-- Multiple Checkboxes -->");
         $.each(checkboxes, function(i,e){
           if(e.length > 0){
-            $(value).append('\n      <label class="checkbox">\n        <input type="checkbox" value="'+e+'">\n        '+e+'\n      </label>');
+            $(value).append('\n      <label class="checkbox">\n        <input type="checkbox" value="'+e+'"  name="'+box_name+'">\n        '+e+'\n      </label>');
           }
         });
         $(value).append("\n  ")
@@ -280,10 +284,11 @@ $(document).ready(function(){
           $($(value).find("input")[0]).attr("checked", true)
       } else if (vartype==="inline-checkboxes"){
         var checkboxes = $(e).val().split("\n");
+        var in_box_name = $(".popover #label").val();
         $(value).html("\n      <!-- Inline Checkboxes -->");
         $.each(checkboxes, function(i,e){
           if(e.length > 0){
-            $(value).append('\n      <label class="checkbox inline">\n        <input type="checkbox" value="'+e+'">\n        '+e+'\n      </label>');
+            $(value).append('\n      <label class="checkbox-inline">\n        <input type="checkbox" value="'+e+'" name="'+in_box_name+'">\n        '+e+'\n      </label>');
           }
         });
         $(value).append("\n  ")
@@ -293,7 +298,7 @@ $(document).ready(function(){
         $(value).html("\n      <!-- Inline Radios -->");
         $.each(radios, function(i,e){
           if(e.length > 0){
-            $(value).append('\n      <label class="radio inline">\n        <input type="radio" value="'+e+'" name="'+group_name+'">\n        '+e+'\n      </label>');
+            $(value).append('\n      <label class="radio-inline">\n        <input type="radio" value="'+e+'" name="'+group_name+'">\n        '+e+'\n      </label>');
           }
         });
         $(value).append("\n  ")
@@ -310,13 +315,17 @@ $(document).ready(function(){
     
     });
   });
-  $("#navtab").delegate("#sourcetab", "click", function(e){
+  $("body").delegate("#sourcetab", "click", function(e){
     b = genSource();
     a = genEdit();
     var URL = window.location.href;
     $.post( URL+"/save", {
             javascript_data: b,
             edit_data: a
+        },
+        function(data,status){
+          alert(data);
         })
+   
   });
 });

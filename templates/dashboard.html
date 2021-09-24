@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>Drag & Drop Bootstrap Form Builder</title>
+        <title>Myforms</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,6 +34,7 @@
                       <tr>
                         <th scope="col">Creation Date</th>
                         <th scope="col">Action</th>
+                        <th scope="col">View Response</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -41,6 +42,8 @@
                         <tr>
                             <td>{{form.creation_date}}</td>
                             <td><a href="/editForm/{{form.id}}" class="btn btn-outline-primary">Edit</a></td>
+                            <td><a href="/responses/{{form.id}}" class="btn btn-outline-primary">View</a></td>
+                        
                         </tr>
                         {%endfor%}
                 
