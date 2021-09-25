@@ -1,49 +1,51 @@
-<html>
-<head>
-    <title>SignUp</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
-</head>
-<body>
-    <div class = "container">
-        <div class="card">
-            <div class="inner-box" id="card">
-                <div class="card-front">
-                    <h2>
-                        LOGIN
-                    </h2>
-                    <form>
-                        <input type="email" class="input-box" placeholder="Enter your email" required>
-                        <input type="password" class="input-box" placeholder="Password" required>
-                        <button type="submit" class="submit-btn">Submit</button>
-                    </form>
-                    <button type="button" class="btn" onclick="openRegister()">I'm new here</button>
-                    <a href="">Forgot password</a>
-                </div>
-                <div class="card-back">
-                    <h2>
-                        REGISTER
-                    </h2>
-                    <form>
-                        <input type="text" class="input-box" placeholder="Name" required>
-                        <input type="email" class="input-box" placeholder="Enter your email" required>
-                        <input type="password" class="input-box" placeholder="Password" required>
-                        <button type="submit" class="submit-btn">Submit</button>
-                    </form>
-                    <button type="button" class="btn" onclick="openLogin()">I've an account</button>
-                    <a href="">Forgot password</a>
-                </div>
-            </div>
-        </div>
-    </div>
+{% extends 'base.html' %}
+{% block title %}MyForms :: SignUp{% endblock %}
+{%block content%}
+<!--Section: Login Form-->
 
-    <script>
-        var card = document.getElementById("card");
-        function openRegister(){
-            card.style.transform = "rotateY(-180deg)";
-        }
-        function openLogin(){
-            card.style.transform = "rotateY(0deg)";
-        }
-    </script>
-</body>
-</html>
+<div class="wrapper" >
+    
+    <div id="formContent">
+    <br>
+    <h2 class="textcolor"> Sign Up </h2>
+    <br>
+    <section class="mb-5 login-form">
+
+        <form class="needs-validation" autocomplete="off" method="POST">
+            
+                <div class="col">
+                  <label >First Name<span style="color: red;">*</span></label><br>
+                  <input type="text" class="form-control" name="firstname" size="32" required>
+                </div>
+                <div class="col">
+                    <label >Last Name<span style="color: red;">*</span></label><br>
+                  <input type="text" class="form-control" name="lastname" size="32" required>
+                </div>
+            
+              
+                <div class="form-group col">
+                  <label for="inputEmail4">Email<span style="color: red;">*</span></label><br>
+                  <input type="email" class="form-control" id="inputEmail4" name="email" size="32" required>
+                </div>
+                <div class="form-group col">
+                  <label for="inputPassword4">Password<span style="color: red;">*</span></label><br>
+                  <input type="password" class="form-control" id="inputPassword4" name="password" size="32" required>
+                </div>
+              
+        
+        {% if msg%}
+        <div class="flash alert alert-danger" role="alert">{{ msg }}</div>
+        {% endif %}
+        <br/>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        <br/><br/>
+        <a href="/">Already have an account?</a>
+
+        </form>
+    
+    </section>
+    </div>
+</div>
+  <!--Section: Login Form-->
+
+{%endblock%}

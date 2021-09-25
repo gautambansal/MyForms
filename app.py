@@ -1,9 +1,11 @@
 from os import error
 import functools
 import json
+from re import A
 from sqlalchemy import desc
 from flask import Flask, jsonify, request,render_template,session,g,redirect,url_for
 from werkzeug.security import check_password_hash, generate_password_hash
+from wtforms.form import Form
 from models import db,Forms,Users,Formdata
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -23,6 +25,34 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
+@app.route('/signup' , methods=['GET','POST'])
+def signup():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+
+        user = Users.query.filter_by(email=email).first()
+
+        if user:
+            return render_template('signUp.html',msg='Email already exists')
+        
+        try:
+            newUser = Users()
+            newUser.firstname = firstname
+            newUser.lastname = lastname
+            newUser.email = email
+            newUser.password = generate_password_hash(password) 
+            db.session.add(newUser)
+            db.session.commit()
+
+        except Exception as e:
+            return render_template('signUp.html',msg='Something went wrong')
+
+        return redirect(url_for('adminLogin')) 
+    return render_template('signUp.html')
+        
 
 @app.route('/' , methods=['GET','POST'])
 def adminLogin():
@@ -49,13 +79,6 @@ def adminLogin():
         return render_template( 'adminLogin.html', msg='Wrong user or password', form=form)
 
 
-#Logout feature
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('adminLogin'))
-
 
 # checks if a user id is stored in the session
 
@@ -78,6 +101,14 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+#Logout feature
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    return redirect(url_for('adminLogin'))
 
 
 @app.route('/home',methods = ['GET'])
@@ -120,7 +151,7 @@ def getResponse(fid):
         #print(responses[0]) 
         return render_template('responses.html',responses = responses) 
     
-    return render_template('responses.html',msg="No form exist")
+    return render_template('error.html')
 
 
 
@@ -163,13 +194,19 @@ def save(fid):
 
 
 @app.route('/form/<int:fid>',methods = ['GET','POST'])
+@login_required
 def render_f(fid):
     form = Forms.query.filter(Forms.id==fid).first()
+    response = Formdata.query.filter(Formdata.form_id==fid,Formdata.user_id==g.user).first()
+
+    if response:
+        return render_template('thankyoupage.html')
+
     if request.method == 'POST':
         
         data = request.form
         my_dict = {}
-        
+      
         for key in data:
             my_dict[key] = [item for item in data.getlist(key)]
         
@@ -178,7 +215,8 @@ def render_f(fid):
         try:
             newData = Formdata()
             newData.form_data = data
-            newData.form_id = fid 
+            newData.form_id = fid
+            newData.user_id = g.user 
             db.session.add(newData)
             db.session.commit()
 

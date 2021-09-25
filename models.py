@@ -8,7 +8,6 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(20), nullable=False)
     lastname = db.Column(db.String(20))
-    phone = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
 
@@ -26,4 +25,6 @@ class Formdata(db.Model):
     form_id = db.Column(db.Integer, db.ForeignKey('forms.id'),nullable=False)
     submission_date = db.Column(db.DateTime, default = datetime.now())
     form_data = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable=False)
+    
     #email = db.Column(db.String(100), unique=True, nullable=False)
