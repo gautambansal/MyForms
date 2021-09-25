@@ -28,6 +28,7 @@ class LoginForm(FlaskForm):
 @app.route('/signup' , methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
+        print(request.form)
         email = request.form['email']
         password = request.form['password']
         firstname = request.form['firstname']
