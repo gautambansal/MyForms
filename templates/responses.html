@@ -22,6 +22,7 @@
                     <thead>
                       <tr>
                         <th scope="col">Submission Date</th>
+                        <th scope="col">UserName</th>
                         <th scope="col">Responses</th>
                         <!-- {%for key,value in responses[0].form_data.items() %}
                             <th scope="col">{{key}}</th>
@@ -32,6 +33,7 @@
                         {%for response in responses%}
                         <tr>
                             <td>{{response.submission_date}}</td>
+                            <td>{{response.user_id}}</td>
                             <td>
                                 <table>
                                     {%for key,value in response.form_data.items() %}

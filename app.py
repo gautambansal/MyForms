@@ -28,6 +28,7 @@ class LoginForm(FlaskForm):
 @app.route('/signup' , methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
+    #    print(request.form)
         email = request.form['email']
         password = request.form['password']
         firstname = request.form['firstname']
@@ -53,8 +54,11 @@ def signup():
         return redirect(url_for('adminLogin')) 
     return render_template('signUp.html')
         
-
-@app.route('/' , methods=['GET','POST'])
+@app.route('/' , methods=['GET'])
+def home():
+    return render_template('home.html')
+    
+@app.route('/login' , methods=['GET','POST'])
 def adminLogin():
     form = LoginForm()
     if request.method == 'GET':
