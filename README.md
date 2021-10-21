@@ -1,16 +1,16 @@
 # MyForms v1.0
 
-##What's this?
+## What's this?
 A drag and drop form builder which can be used to create easy forms for surveys.
 
-###technologies used -: 
+### technologies used -: 
 Flask(python)
 HTML
 CSS
 JavaScript
 JQuery
 
-####Installation
+#### Installation
 step-1
 git clone https://github.com/gautambansal/MyForms.git
 
